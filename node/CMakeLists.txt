@@ -5,3 +5,5 @@ message("Configuring ${PROJECT_NAME}")
 
 add_executable(${PROJECT_NAME} main.cpp)
 
+add_subdirectory(tests)
+

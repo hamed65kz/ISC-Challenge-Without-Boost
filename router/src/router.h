@@ -1,4 +1,6 @@
 
+#ifndef ROUTER_H
+#define ROUTER_H
 #include "member_session.h"
 
 // Configuration
@@ -32,3 +34,5 @@ class Router {
      std::unordered_map<int, std::shared_ptr<MemberSession>> members_;
      std::ofstream logger_;
    };
+   
+   #endif

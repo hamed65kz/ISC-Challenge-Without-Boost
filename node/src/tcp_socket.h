@@ -1,3 +1,6 @@
+#ifndef TCPSOCKET_H
+#define TCPSOCKET_H
+
 #include <chrono>
 #include <cstring>
 #include <functional>
@@ -19,7 +22,7 @@
 #endif
 
 const int BUFFER_SIZE = 1500;
-#define NO_ERROR 0
+#define NO_ERR 0
 
 class TCPSocket {
  public:
@@ -77,7 +80,7 @@ class TCPSocket {
     ss << "Connected to Server : [" << this->_server_ip <<":"<<this->_server_port<<"] \n" ;
 
     std::cout << ss.str();
-    return NO_ERROR;
+    return NO_ERR;
   }
   int recvMessage(int& bytes_received) {
     // Receive response
@@ -93,7 +96,7 @@ class TCPSocket {
     }
     _buffer[bytes_received] =0;// zero terminating
     std::cout << "Server response: " << _buffer << "\n";
-    return NO_ERROR;
+    return NO_ERR;
   }
   int sendMessage(std::string message) {
     int bytes_sent = send(_socket, message.c_str(), message.size(), 0);
@@ -115,3 +118,5 @@ class TCPSocket {
   int _socket;
   char* _buffer;
 };
+
+#endif

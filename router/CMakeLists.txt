@@ -6,22 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
 
-
-
-
-find_package(fmt CONFIG REQUIRED)
 add_executable(${PROJECT_NAME} main.cpp)
-target_link_libraries(${PROJECT_NAME} PRIVATE fmt::fmt)
 
 
 find_package(Boost REQUIRED COMPONENTS system thread)
-
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
     target_link_libraries(${PROJECT_NAME} PRIVATE  ${Boost_LIBRARIES})
 else()
     message(WARNING "Boost library not found.")
 endif()
-
-find_package(spdlog CONFIG REQUIRED)
-target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog)

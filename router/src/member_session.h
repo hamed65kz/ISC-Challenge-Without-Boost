@@ -1,3 +1,6 @@
+#ifndef SESSION_H
+#define SESSION_H
+
 #include <boost/asio.hpp>
 #include <chrono>
 #include <fstream>
@@ -5,7 +8,7 @@
 #include <iostream>
 #include <string>
 #include <unordered_map>
-#include "logger.h"
+
 
 using namespace std;
 using namespace boost::asio;
@@ -23,13 +26,10 @@ class MemberSession : public std::enable_shared_from_this<MemberSession> {
          std::unordered_map<int, std::shared_ptr<MemberSession>>& members,
          std::ofstream& logger)
          : socket_(std::move(socket)), members_(members), logger_(logger) {
-           cout<<"\nnew session start";
+
          }
    
-     void start() {
-       // First read member ID (3 digits)
-       cout<<"\nnew session started";
-       
+     void start() {  
        async_read(
            socket_, buffer(id_buffer_, 3),
            [self = shared_from_this()](boost::system::error_code ec, size_t) {
@@ -122,4 +122,4 @@ class MemberSession : public std::enable_shared_from_this<MemberSession> {
      std::unordered_map<int, std::shared_ptr<MemberSession>>& members_;
      std::ofstream& logger_;
    };
-   
+   #endif

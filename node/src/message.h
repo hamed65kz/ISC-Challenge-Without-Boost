@@ -1,3 +1,6 @@
+#ifndef MESSAGE_H
+#define MESSAGE_H
+
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -61,3 +64,4 @@ class Message{
         return idmsg;
     }
 };
+#endif

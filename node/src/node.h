@@ -1,3 +1,6 @@
+#ifndef NODE_H
+#define NODE_H
+
 #include "tcp_socket.h"
 #include "message.h"
 
@@ -35,8 +38,8 @@ class Node {
           byte_send = this->_tcp_socket->sendMessage(first_msg);
         }
 
-        int recv_err = NO_ERROR;
-        while (recv_err == NO_ERROR) {
+        int recv_err = NO_ERR;
+        while (recv_err == NO_ERR) {
           int recv_bytes = 0;
           recv_err = this->_tcp_socket->recvMessage(recv_bytes);
           if (recv_bytes > 0) {
@@ -60,3 +63,4 @@ class Node {
   TCPSocket* _tcp_socket;
   bool _initiate_messaging;
 };
+#endif

@@ -4,8 +4,11 @@
 #include "src/router.h"
 
 
+    
 int main() {
+
   try {
+    cout<<"Router Started.";
     io_context io;
     Router router(io);
     io.run();
