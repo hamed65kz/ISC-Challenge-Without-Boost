@@ -6,9 +6,11 @@
 
     
 int main() {
+  
 
   try {
-    cout<<"Router Started.";
+    Logger::Initialize("logs/router.log"); 
+    LOG_INFO("Router started to listen on "+std::to_string(PORT)+" port.");
     io_context io;
     Router router(io);
     io.run();

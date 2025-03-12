@@ -4,7 +4,7 @@
 #include "member_session.h"
 
 // Configuration
-constexpr short PORT = 8080;
+constexpr short PORT = 8090;
 
 
 
@@ -12,18 +12,19 @@ class Router {
     public:
      Router(io_context& io)
          : acceptor_(io, tcp::endpoint(tcp::v4(), PORT)),
-           socket_(io),
-           logger_("router.log", std::ios::app) {
+           socket_(io){
        start_accept();
      }
    
     private:
      void start_accept() {
        acceptor_.async_accept(socket_, [this](boost::system::error_code ec) {
-         cout<<"\nnew incoming request";
+        LOG_INFO("Accept new node request");
          if (!ec) {
-           cout<<"\nmake new session and start it";
-           std::make_shared<MemberSession>(std::move(socket_), members_, logger_)->start();
+           std::make_shared<MemberSession>(std::move(socket_), members_)->start();
+         }
+         else{
+          LOG_ERROR("Error on accepting node request : "+ ec.message());
          }
          start_accept();
        });
@@ -32,7 +33,7 @@ class Router {
      tcp::acceptor acceptor_;
      tcp::socket socket_;
      std::unordered_map<int, std::shared_ptr<MemberSession>> members_;
-     std::ofstream logger_;
+
    };
    
    #endif

@@ -27,13 +27,18 @@ public:
             console_logger_ = std::make_shared<spdlog::logger>("console", console_sink);
             file_logger_ = std::make_shared<spdlog::logger>("file", file_sink);
 
-            spdlog::register_logger(console_logger_);
-            spdlog::register_logger(file_logger_);
+     
 
             // Set default log levels
             
             console_logger_->set_level(spdlog::level::trace);
             file_logger_->set_level(spdlog::level::trace);
+
+
+            spdlog::register_logger(console_logger_);
+            spdlog::register_logger(file_logger_);
+
+
 
             // Flush immediately for critical errors
             spdlog::flush_on(spdlog::level::err);

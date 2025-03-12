@@ -5,9 +5,12 @@
 #include <cstring>
 #include <functional>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <thread>
-#include <sstream>
+
+#include "logger.h"
+
 
 #ifdef _WIN32
 #include <winsock2.h>
@@ -47,7 +50,7 @@ class TCPSocket {
     // Initialize Winsock
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-      std::cerr << "WSAStartup failed\n";
+      LOG_ERROR("WSAStartup failed");
       return 1;
     }
 #endif
@@ -55,7 +58,7 @@ class TCPSocket {
     // Create socket
     _socket = socket(AF_INET, SOCK_STREAM, 0);
     if (_socket == -1) {
-      std::cerr << "Socket creation failed\n";
+      LOG_ERROR("Socket creation failed");
       return 1;
     }
     // Configure server address
@@ -66,7 +69,7 @@ class TCPSocket {
     // Connect to server
     if (connect(_socket, reinterpret_cast<sockaddr*>(&_server_addr),
                 sizeof(_server_addr)) == -1) {
-      std::cerr << "Connection failed\n";
+      LOG_ERROR("Connection failed.");
 #ifdef _WIN32
       closesocket(_socket);
       WSACleanup();
@@ -77,33 +80,32 @@ class TCPSocket {
     }
 
     std::stringstream ss;
-    ss << "Connected to Server : [" << this->_server_ip <<":"<<this->_server_port<<"] \n" ;
-
-    std::cout << ss.str();
+    ss << "Connected to Server : [" << this->_server_ip << ":" << this->_server_port << "] \n";
+    LOG_INFO(ss.str());
     return NO_ERR;
   }
   int recvMessage(int& bytes_received) {
     // Receive response
-    bytes_received =0;
+    bytes_received = 0;
     bytes_received = recv(_socket, _buffer, BUFFER_SIZE - 1, 0);
     if (bytes_received <= 0) {
       if (bytes_received == 0) {
-        std::cout << "Connection closed by server\n";
+        LOG_ERROR("Connection closed by server");
       } else {
-        std::cerr << "Receive failed\n";
+        LOG_ERROR("Receive failed");
       }
       return 1;
     }
-    _buffer[bytes_received] =0;// zero terminating
-    std::cout << "Server response: " << _buffer << "\n";
+    _buffer[bytes_received] = 0;  // zero terminating
+    LOG_INFO("Recveived MSG : " + std::string(_buffer));
     return NO_ERR;
   }
   int sendMessage(std::string message) {
     int bytes_sent = send(_socket, message.c_str(), message.size(), 0);
     if (bytes_sent == -1) {
-      std::cerr << "Send reply failed.\n";
+      LOG_ERROR("Send reply failed.");
     }
-    std::cout << "Node response: " << message << "\n";
+    LOG_TRACE("Sended MSG : " + message);
     return bytes_sent;
   }
   const char* getBuffer() const {

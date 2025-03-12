@@ -16,3 +16,11 @@ if(Boost_FOUND)
 else()
     message(WARNING "Boost library not found.")
 endif()
+
+
+option(SPDLOG_BUILD_TESTS "" OFF)
+option(SPDLOG_BUILD_EXAMPLES "" OFF)
+add_subdirectory(../thirdparty/spdlog "${CMAKE_CURRENT_BINARY_DIR}/spdlog")
+
+# Link against spdlog::spdlog (header-only interface)
+target_link_libraries(${PROJECT_NAME} PRIVATE spdlog::spdlog_header_only)

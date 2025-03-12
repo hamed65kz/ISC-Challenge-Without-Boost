@@ -51,7 +51,7 @@ class Node {
         }
       } else {
         sleep(5000);
-        std::cout << "retry connection to router...\n";
+        LOG_WARN("retry connection to router...");
       }
     }
   }

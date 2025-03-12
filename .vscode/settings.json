@@ -1,4 +1,5 @@
 {
+    "cmake.configureSettings": { "gtest_build_samples": "ON" },
     "files.associations": {
         "*.ipp": "cpp",
         "array": "cpp",
@@ -94,6 +95,10 @@
         "xutility": "cpp",
         "unordered_set": "cpp",
         "set": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "complex": "cpp",
+        "regex": "cpp",
+        "expected": "cpp",
+        "stack": "cpp"
     }
 }
