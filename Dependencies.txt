@@ -1,0 +1,10 @@
+#format : package_name:linkage_method
+
+gtest:default
+spdlog:default
+
+#examples
+#fmt:default        =>  on Windows, default = non-static  / on unix, default = static
+#fmt:static
+#fmt:non-static
+#fmt                => it is equal to fmt:default
