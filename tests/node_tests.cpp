@@ -29,7 +29,13 @@ TEST_F(MyTestFixture, TestCase1) {
   EXPECT_EQ(Message::buildFirstMessage(3, 5), "00322001234561111111111111111005");
 }
 
+TEST_F(MyTestFixture, TestCase2) {
+  EXPECT_EQ(Message::processMessage(3,"00322001234561111111111111111005",32), "00549701234561111111111111111003");
+}
 
+TEST_F(MyTestFixture, TestCase3) {
+  EXPECT_EQ(Message::buildIdMessage(3), "003");
+}
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

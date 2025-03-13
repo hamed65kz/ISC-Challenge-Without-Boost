@@ -13,7 +13,7 @@ SET(SOURCES
     )
 
 add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
-
+target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 include(../cmake_modules/boost.cmake)
 include(../cmake_modules/spdlog.cmake)
