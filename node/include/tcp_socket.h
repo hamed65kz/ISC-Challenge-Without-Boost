@@ -26,7 +26,7 @@ class TCPSocket {
   int recvMessage(int& bytes_received) ;   
   int sendMessage(std::string message);
   const char* getBuffer() const;
-
+  void closeSocket();
  private:
   std::string _server_ip;
   int _server_port;

@@ -22,5 +22,9 @@ class Node {
   int _dstId;
   TCPSocket* _tcp_socket;
   bool _initiate_messaging;
+  int send_message(std::string msg);
+  int subscribe_to_router();
+  int send_initiator_message();
+  void closeConnection();
 };
 #endif

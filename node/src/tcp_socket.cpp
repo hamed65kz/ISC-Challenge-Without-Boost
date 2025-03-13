@@ -18,13 +18,8 @@ TCPSocket::TCPSocket(std::string server_ip, int server_port) {
 }
 TCPSocket::~TCPSocket() {
   delete[] _buffer;
-#ifdef _WIN32
-  closesocket(_socket);
-  WSACleanup();
-#else
-  shutdown(_socket, SHUT_RDWR);
-  close(_socket);
-#endif
+  closeSocket();
+
 }
 int TCPSocket::connect_to_server() {
 #ifdef _WIN32
@@ -51,12 +46,7 @@ int TCPSocket::connect_to_server() {
   if (connect(_socket, reinterpret_cast<sockaddr*>(&_server_addr),
               sizeof(_server_addr)) == -1) {
     LOG_ERROR("Connection failed.");
-#ifdef _WIN32
-    closesocket(_socket);
-    WSACleanup();
-#else
-    close(_socket);
-#endif
+    closeSocket();
     return 1;
   }
 
@@ -71,6 +61,7 @@ int TCPSocket::recvMessage(int& bytes_received) {
   if (bytes_received <= 0) {
     if (bytes_received == 0) {
       LOG_ERROR("Connection closed by server");
+      
     } else {
       LOG_ERROR("Receive failed");
     }
@@ -90,4 +81,12 @@ int TCPSocket::sendMessage(std::string message) {
 }
 const char* TCPSocket::getBuffer() const {
   return this->_buffer;  // Return a const pointer to the internal data
+}
+void TCPSocket::closeSocket(){
+  #ifdef _WIN32
+    closesocket(_socket);
+    WSACleanup();
+#else
+    close(_socket);
+#endif
 }

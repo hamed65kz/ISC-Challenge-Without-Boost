@@ -6,7 +6,7 @@ int main(int argc, char* argv[]) {
     Logger::Initialize();
     //std::cout<<"argc = "<<argc;
     if (argc != 5) {
-        std::cerr << "Usage: " << argv[0] << " <id> <dstid> <router_ip> <router_port>\n";
+        LOG_CRITICAL("Insufficient Argument.\nUsage: ISC-Node.exe <id> <dstid> <router_ip> <router_port>");
         return 1;
     }
     try {
@@ -15,13 +15,13 @@ int main(int argc, char* argv[]) {
         int dstid = std::stoi(argv[2]);
         std::string router_ip = argv[3];
         int router_port = std::stoi(argv[4]);
-        
-        LOG_INFO("Node "+std::to_string(id) + " started. ");
-        LOG_INFO("Dst Node is : "+std::to_string(dstid));
-        LOG_INFO("Router is on "+router_ip + ":"+std::to_string(dstid));
-        bool initiate_messaging= false;
-        if(id == 3){
-            initiate_messaging =true;
+
+        LOG_INFO("Node {} started.", id, " started. ");
+        LOG_INFO("Dst Node is : {}", dstid);
+        LOG_INFO("Router is on {}:{}", router_ip, router_port);
+        bool initiate_messaging = false;
+        if (id == 3) {
+          initiate_messaging = true;
         }
         Node node(id,dstid,initiate_messaging,router_ip,router_port);
         node.start();
