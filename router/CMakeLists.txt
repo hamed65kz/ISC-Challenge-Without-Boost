@@ -6,8 +6,15 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
 
-add_executable(${PROJECT_NAME} main.cpp)
 
+SET(SOURCES
+    src/member_session.cpp
+    src/router.cpp
+    )
+
+add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
+
+target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 find_package(Boost REQUIRED COMPONENTS system thread)
 if(Boost_FOUND)

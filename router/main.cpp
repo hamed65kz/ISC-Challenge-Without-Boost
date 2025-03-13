@@ -1,8 +1,8 @@
 // router.cpp : This file contains the 'main' function for message router
 // element. Program execution begins and ends there.
 
-#include "src/router.h"
-
+#include "router.h"
+#include "logger.h"
 
     
 int main() {

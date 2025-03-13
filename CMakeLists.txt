@@ -6,4 +6,5 @@ enable_testing()
 
 add_subdirectory("router")
 add_subdirectory("node")
+add_subdirectory("tests")
 

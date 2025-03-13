@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "../src/node.h"
+#include "../node/include/message.h"
 
 using namespace std;
 

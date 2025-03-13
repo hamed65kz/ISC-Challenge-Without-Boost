@@ -1,5 +1,6 @@
 
-#include "src/node.h"
+#include "node.h"
+#include "logger.h"
 
 int main(int argc, char* argv[]) {
     Logger::Initialize();

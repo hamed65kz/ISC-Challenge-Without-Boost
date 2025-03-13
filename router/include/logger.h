@@ -24,8 +24,8 @@ public:
             file_sink->set_pattern("[%Y-%m-%d %T.%e] [%l] : %v");
 
             // Create and register loggers
-            console_logger_ = std::make_shared<spdlog::logger>("console", console_sink);
-            file_logger_ = std::make_shared<spdlog::logger>("file", file_sink);
+            auto console_logger_ = std::make_shared<spdlog::logger>("console", console_sink);
+            auto file_logger_ = std::make_shared<spdlog::logger>("file", file_sink);
 
      
 
@@ -50,15 +50,8 @@ public:
 
     static std::shared_ptr<spdlog::logger> Console() { return spdlog::get("console"); }
     static std::shared_ptr<spdlog::logger> File() { return spdlog::get("file"); }
-
-private:
-    static std::shared_ptr<spdlog::logger> console_logger_;
-    static std::shared_ptr<spdlog::logger> file_logger_;
 };
 
-// Initialize static members
-std::shared_ptr<spdlog::logger> Logger::console_logger_ = nullptr;
-std::shared_ptr<spdlog::logger> Logger::file_logger_ = nullptr;
 
 // Macros for ease of use
 #define LOG_TRACE(...)   SPDLOG_LOGGER_TRACE(Logger::Console(), __VA_ARGS__)
