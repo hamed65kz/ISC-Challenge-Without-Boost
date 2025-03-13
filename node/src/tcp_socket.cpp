@@ -4,7 +4,6 @@
 #include <cstring>
 #include <functional>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <thread>
 
@@ -61,10 +60,8 @@ int TCPSocket::connect_to_server() {
     return 1;
   }
 
-  std::stringstream ss;
-  ss << "Connected to Server : [" << this->_server_ip << ":"
-     << this->_server_port << "] \n";
-  LOG_INFO(ss.str());
+  LOG_INFO("Connected to Server : [{}:{}]", this->_server_ip,
+           this->_server_port);
   return NO_ERR;
 }
 int TCPSocket::recvMessage(int& bytes_received) {
@@ -80,7 +77,7 @@ int TCPSocket::recvMessage(int& bytes_received) {
     return 1;
   }
   _buffer[bytes_received] = 0;  // zero terminating
-  LOG_INFO("Recveived MSG : " + std::string(_buffer));
+  LOG_INFO("Recveived MSG : {}", std::string(_buffer));
   return NO_ERR;
 }
 int TCPSocket::sendMessage(std::string message) {
@@ -88,7 +85,7 @@ int TCPSocket::sendMessage(std::string message) {
   if (bytes_sent == -1) {
     LOG_ERROR("Send reply failed.");
   }
-  LOG_TRACE("Sended MSG : " + message);
+  LOG_TRACE("Sended MSG : {}", message);
   return bytes_sent;
 }
 const char* TCPSocket::getBuffer() const {
