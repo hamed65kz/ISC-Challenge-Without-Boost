@@ -248,3 +248,4 @@ This program does amazing things. Below is a demonstration of its execution:
 
 
 B. The node should incorporate receive and send queues to manage bursts of traffic effectively.
+C. Build and test in linux environment
