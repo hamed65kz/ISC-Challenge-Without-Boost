@@ -196,6 +196,47 @@ During the CMake configuration process, the vcpkg installer script will run in a
 
 Follow these steps to successfully build the project. If you encounter any issues, please ensure that your environment variables and paths are correctly set.
 
+
+## How to Run
+
+### Running the Router Executable
+
+To run the router executable, use the following command:
+
+```bash
+ISC-Router.exe <listen_port>
+```
+
+For example, to run the router on port 6060:
+
+```bash
+ISC-Router.exe 6060
+```
+
+### Running the Node Executable
+
+To run the node executable, use the following command:
+
+```bash
+ISC-Node.exe <id> <dstid> <router_ip> <router_port>
+```
+
+For example, to run a node with ID 3 that communicates with destination ID 5 through the router at IP address 127.0.0.1 on port 6060, use:
+
+```bash
+ISC-Node.exe 3 5 "127.0.0.1" 6060
+```
+a sample running example is like:
+```bash
+ISC-Router.exe 6060
+ISC-Node.exe 5 3 "127.0.0.1" 6060
+ISC-Node.exe 3 5 "127.0.0.1" 6060
+```
+
+### Important Note
+
+It is hard-coded in the Node application to start messaging only if the ID is set to 3. Therefore, at least one node must have an ID of 3, and this node should be started only after the remote node has been established. Node 3 sends the first message at startup, and if the remote node does not exist or does not respond, the messaging will stop.
+
 ## Demonstration
 
 This program does amazing things. Below is a demonstration of its execution:
