@@ -9,9 +9,10 @@
  * Initializes the acceptor to listen for incoming connections on the specified port.
  * 
  * @param io The I/O context used for asynchronous operations.
+ * @param router_port the port router listen to it
  */
-Router::Router(io_context& io)
-    : acceptor_(io, tcp::endpoint(tcp::v4(), PORT)), socket_(io) {
+Router::Router(io_context& io, int router_port)
+    : acceptor_(io, tcp::endpoint(tcp::v4(), router_port)), socket_(io), router_port_(router_port) {
   start_accept();
 }
 

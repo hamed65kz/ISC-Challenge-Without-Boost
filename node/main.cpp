@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
         std::string router_ip = argv[3];
         int router_port = std::stoi(argv[4]);
 
-        LOG_INFO("Node {} started.", id, " started. ");
+        LOG_INFO("Node {} started.", id);
         LOG_INFO("Dst Node is : {}", dstid);
         LOG_INFO("Router is on {}:{}", router_ip, router_port);
         bool initiate_messaging = false;

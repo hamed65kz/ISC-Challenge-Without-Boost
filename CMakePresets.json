@@ -28,7 +28,7 @@
             }
         },
         {
-            "name": "MSVS2022-X64",
+            "name": "MSVC2022-X64",
             "displayName": "Visual Studio Enterprise 2022 Release - amd64",
             "description": "Using compilers for Visual Studio 17 2022 (x64 architecture)",
             "generator": "Visual Studio 17 2022",
@@ -58,16 +58,16 @@
             "configurePreset": "GCC-Release"
         },
         {
-            "name": "MSVS2022-X64-debug",
+            "name": "MSVC2022-X64-debug",
             "displayName": "Visual Studio Enterprise 2022 Release - amd64 - Debug",
-            "configurePreset": "MSVS2022-X64",
+            "configurePreset": "MSVC2022-X64",
             "configuration": "Debug"
         }
         ,
         {
-            "name": "MSVS2022-X64-release",
+            "name": "MSVC2022-X64-release",
             "displayName": "Visual Studio Enterprise 2022 Release - amd64 - Release",
-            "configurePreset": "MSVS2022-X64",
+            "configurePreset": "MSVC2022-X64",
             "configuration": "Release"
         }
     ]

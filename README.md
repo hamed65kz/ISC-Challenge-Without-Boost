@@ -195,3 +195,8 @@ During the CMake configuration process, the vcpkg installer script will run in a
   
 
 Follow these steps to successfully build the project. If you encounter any issues, please ensure that your environment variables and paths are correctly set.
+
+## Demonstration
+
+This program does amazing things. Below is a demonstration of its execution:
+![Program Execution](assets/demo.gif)

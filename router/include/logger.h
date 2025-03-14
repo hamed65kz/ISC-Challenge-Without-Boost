@@ -1,6 +1,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
+#include <iostream>
 #include <memory>
 #define SPDLOG_ACTIVE_LEVEL SPDLOG_LEVEL_TRACE
 #include <spdlog/spdlog.h>
@@ -31,11 +32,13 @@ public:
                           size_t max_file_size = 1024 * 1024 * 5,  // 5MB
                           size_t max_files = 3) {
         try {
-            // Create console sink with color
+            // Create console sink with color, we use mt version for being thread safe
+            //The suffix _mt in their names indicates that they are thread-safe, meaning they can handle concurrent logging calls from multiple threads without corrupting the log output.
             auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
             console_sink->set_pattern("%^[%T] : %v%$");
             
-            // Create rotating file sink
+            // Create rotating file sink, we use mt version for being thread safe
+            //The suffix _mt in their names indicates that they are thread-safe, meaning they can handle concurrent logging calls from multiple threads without corrupting the log output.
             auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
                 file_path, max_file_size, max_files
             );
@@ -95,6 +98,6 @@ public:
 #define FLOG_WARN(...)    SPDLOG_LOGGER_WARN(Logger::File(), __VA_ARGS__)
 #define FLOG_ERROR(...)   SPDLOG_LOGGER_ERROR(Logger::File(), __VA_ARGS__)
 #define FLOG_CRITICAL(...) SPDLOG_LOGGER_CRITICAL(Logger::File(), __VA_ARGS__)
-                  
+                        
 
 #endif
