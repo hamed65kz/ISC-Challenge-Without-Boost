@@ -242,7 +242,9 @@ It is hard-coded in the Node application to start messaging only if the ID is se
 This program does amazing things. Below is a demonstration of its execution:
 ![Program Execution](assets/demo.gif)
 
-## Future Works
-A. The router operates on a single thread, so I need to enable a thread pool to enhance its performance.
+## Future Works:warning:
+A. The router currently functions on a single thread, so I need to implement a thread pool to improve its performance. It's still a work in progress and contains some syntax errors, but the main concept is clear. You can review it on the thread_router branch.
+[View thread_router Branch](https://github.com/hamed65kz/ISC-Challenge/tree/threaded_router)
+
 
 B. The node should incorporate receive and send queues to manage bursts of traffic effectively.
