@@ -41,7 +41,7 @@
             "request": "launch",
             // Resolved by CMake Tools:
             "program": "${command:cmake.launchTargetPath}",
-            "args": ["5","3","127.0.0.1","8090"],
+            "args": ["6060"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [
