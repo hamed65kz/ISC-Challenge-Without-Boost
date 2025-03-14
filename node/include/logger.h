@@ -31,11 +31,13 @@ public:
                           size_t max_file_size = 1024 * 1024 * 5,  // 5MB
                           size_t max_files = 3) {
         try {
-            // Create console sink with color
+            // Create console sink with color, we use mt version for being thread safe
+            //The suffix _mt in their names indicates that they are thread-safe, meaning they can handle concurrent logging calls from multiple threads without corrupting the log output.
             auto console_sink = std::make_shared<spdlog::sinks::stdout_color_sink_mt>();
             console_sink->set_pattern("%^[%T] : %v%$");
             
-            // Create rotating file sink
+            // Create rotating file sink, we use mt version for being thread safe
+            //The suffix _mt in their names indicates that they are thread-safe, meaning they can handle concurrent logging calls from multiple threads without corrupting the log output.
             auto file_sink = std::make_shared<spdlog::sinks::rotating_file_sink_mt>(
                 file_path, max_file_size, max_files
             );
