@@ -243,9 +243,10 @@ This program does amazing things. Below is a demonstration of its execution:
 ![Program Execution](assets/demo.gif)
 
 ## Future Works
-⚠️Attention: A. The router currently functions on a single thread, so I need to implement a thread pool to improve its performance. It's still a work in progress and contains some syntax errors, but the main concept is clear. You can review it on the thread_router branch.
+A. ⚠️The router currently functions on a single thread, so I need to implement a thread pool to improve its performance. It's still a work in progress and contains some syntax errors, but the main concept is clear. You can review it on the thread_router branch.
 [View thread_router Branch](https://github.com/hamed65kz/ISC-Challenge/tree/threaded_router)
 
 
 B. The node should incorporate receive and send queues to manage bursts of traffic effectively.
+
 C. Build and test in linux environment
