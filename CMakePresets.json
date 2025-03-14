@@ -58,14 +58,14 @@
             "configurePreset": "GCC-Release"
         },
         {
-            "name": "MSVC2022-X64-debug",
+            "name": "MSVS2022-X64-debug",
             "displayName": "Visual Studio Enterprise 2022 Release - amd64 - Debug",
             "configurePreset": "MSVS2022-X64",
             "configuration": "Debug"
         }
         ,
         {
-            "name": "MSVC2022-X64-release",
+            "name": "MSVS2022-X64-release",
             "displayName": "Visual Studio Enterprise 2022 Release - amd64 - Release",
             "configurePreset": "MSVS2022-X64",
             "configuration": "Release"

@@ -1,7 +1,7 @@
 #format : package_name:linkage_method
-
+boost-asio:default
 gtest:default
-spdlog:default
+
 
 #examples
 #fmt:default        =>  on Windows, default = non-static  / on unix, default = static
