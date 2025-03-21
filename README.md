@@ -235,7 +235,7 @@ ISC-Node.exe 3 5 "127.0.0.1" 6060
 
 ### Important Note
 
-It is hard-coded in the Node application to start messaging only if the ID is set to 3. Therefore, at least one node must have an ID of 3, and this node should be started only after the remote node has been established. Node 3 sends the first message at startup, and if the remote node does not exist or does not respond, the messaging will stop.
+All node will send a message to destination node on node startup.
 
 ## Demonstration
 
