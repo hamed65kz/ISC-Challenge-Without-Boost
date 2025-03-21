@@ -31,7 +31,7 @@ void Router::start_accept() {
     LOG_INFO("Accept new node request");
     if (!ec) {
       std::shared_ptr<MemberSession> session = std::make_shared<MemberSession>(
-          std::move(socket), members_, members_mutex_,
+          std::move(socket_), members_, members_mutex_,
           acceptor_.get_executor());
       session->start();
     } else {

@@ -29,6 +29,8 @@ class MemberSession : public std::enable_shared_from_this<MemberSession> {
    * @brief Constructs a MemberSession with the given socket and member list.
    * @param socket The TCP socket for the session.
    * @param members A reference to the unordered map of active member sessions.
+   * @param members_mutex A single mutex for all threads to use for access share members variable
+   * @param executor the execution context where your completion handlers (callbacks) will run.
    */
   MemberSession(
       tcp::socket socket,
