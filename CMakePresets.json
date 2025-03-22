@@ -2,29 +2,17 @@
     "version": 2,
     "configurePresets": [
         {
-            "name": "GCC-Debug",
+            "name": "MinGW",
             "displayName": "GCC 6.3.0 mingw32",
             "description": "Using compilers: C = C:\\MinGW\\bin\\gcc.exe, CXX = C:\\MinGW\\bin\\g++.exe",
             "generator": "MinGW Makefiles",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_PREFIX_PATH":"$env{VCPKG_ROOT}/installed/x64-windows",
                 "CMAKE_C_COMPILER": "C:/MinGW/bin/gcc.exe",
-                "CMAKE_CXX_COMPILER": "C:/MinGW/bin/g++.exe",
-                "CMAKE_BUILD_TYPE": "Debug"
-            }
-        },
-        {
-            "name": "GCC-Release",
-            "displayName": "GCC 6.3.0 mingw32",
-            "description": "Using compilers: C = C:\\MinGW\\bin\\gcc.exe, CXX = C:\\MinGW\\bin\\g++.exe",
-            "generator": "MinGW Makefiles",
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
-                "CMAKE_C_COMPILER": "C:/MinGW/bin/gcc.exe",
-                "CMAKE_CXX_COMPILER": "C:/MinGW/bin/g++.exe",
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_CXX_COMPILER": "C:/MinGW/bin/g++.exe"
             }
         },
         {
@@ -42,20 +30,36 @@
                 "CMAKE_C_COMPILER": "cl.exe",
                 "CMAKE_CXX_COMPILER": "cl.exe"
             }
+        },
+        {
+            "name": "linux-gcc",
+            "displayName": "GCC 9.4.0 x86_64-linux-gnu",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "generator": "Unix Makefiles",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/out/install/${presetName}",
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++",
+                "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_PREFIX_PATH": "$env{VCPKG_ROOT}/installed/x64-linux"
+            }
         }
     ],
     "buildPresets": [
         {
-            "name": "gcc-debug",
+            "name": "MinGW-debug",
             "description": "",
             "displayName": "",
-            "configurePreset": "GCC-Debug"
+            "configurePreset": "MinGW",
+            "configuration": "Debug"
         },
         {
-            "name": "gcc-release",
+            "name": "MinGW-release",
             "description": "",
             "displayName": "",
-            "configurePreset": "GCC-Release"
+            "configurePreset": "MinGW",
+            "configuration": "Release"
         },
         {
             "name": "MSVC2022-X64-debug",
@@ -69,6 +73,21 @@
             "displayName": "Visual Studio Enterprise 2022 Release - amd64 - Release",
             "configurePreset": "MSVC2022-X64",
             "configuration": "Release"
+        },
+        {
+            "name": "linux-gcc-release",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "linux-gcc",
+            "configuration": "Release"
+        }
+        ,
+        {
+            "name": "linux-gcc-debug",
+            "description": "",
+            "displayName": "",
+            "configurePreset": "linux-gcc",
+            "configuration": "Debug"
         }
     ]
 }

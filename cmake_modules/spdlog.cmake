@@ -1,3 +1,6 @@
+# Set fmt to be header-only
+add_compile_definitions(FMT_HEADER_ONLY)
+
 if(NOT DEFINED SPDLOG_ADDED)
     option(SPDLOG_BUILD_TESTS "" OFF)
     option(SPDLOG_BUILD_EXAMPLES "" OFF)

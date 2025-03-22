@@ -1,6 +1,8 @@
 #format : package_name:linkage_method
 boost-asio:default
+boost-thread:default
 gtest:default
+fmt:default
 
 
 #examples

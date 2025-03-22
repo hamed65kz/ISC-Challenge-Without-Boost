@@ -1,5 +1,9 @@
-project(node_tests)
 # Test executable
+project(node_tests)
+
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(GoogleTest)
 enable_testing()
