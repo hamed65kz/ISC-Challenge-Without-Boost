@@ -181,6 +181,8 @@ To ensure CMake can correctly access and link to the vcpkg-installed packages, y
 "CMAKE_PREFIX_PATH": "$env{VCPKG_ROOT}/installed/x64-linux" 
   ```
 
+:warning:The key point is that on Windows, the default triplet is x64-windows, which utilizes the MSVC compiler. Consequently, packages are built using MSVC. If you switch the CMake generator to MinGW, the installed packages will not be compatible with MinGW, Since MSVC and MinGW utilize different C++ ABIs and link to separate runtime libraries, combining them can lead to linker errors like LNK2019 or undefined references. Unfortunately, the current VCPKG automated process does not account for compiler-specific triplets and only installs the platform-specific default triplet. Therefore, on Windows, you cannot link packages built with MSVC to executables built with MinGW.
+
 #### 3. Build the Project
 
   As mentioned, since we are using vcpkg, it is essential to set `CMAKE_TOOLCHAIN_FILE` and `CMAKE_PREFIX_PATH` for a successful build. Below is an example build command for a Windows x64 and Linux x64 host machine:
