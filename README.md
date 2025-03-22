@@ -167,28 +167,39 @@ To ensure CMake can correctly access and link to the vcpkg-installed packages, y
 
   
 
-```plaintext
-
+```bash
 "toolchainFile": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-"CMAKE_PREFIX_PATH": "$env{VCPKG_ROOT}/installed/x64-windows" // Use this if the host architecture is x64
-
-```
-
+  ```
   
+ for Windows x64: 
+ ```bash
+ "CMAKE_PREFIX_PATH": "$env{VCPKG_ROOT}/installed/x64-windows"
+   ```
+
+ for Linux x64: 
+ ```bash
+"CMAKE_PREFIX_PATH": "$env{VCPKG_ROOT}/installed/x64-linux" 
+  ```
 
 #### 3. Build the Project
 
-As mentioned, since we are using vcpkg, it is essential to set `CMAKE_TOOLCHAIN_FILE` and `CMAKE_PREFIX_PATH` for a successful build. Below is an example build command for a Windows x64 host machine:
+  As mentioned, since we are using vcpkg, it is essential to set `CMAKE_TOOLCHAIN_FILE` and `CMAKE_PREFIX_PATH` for a successful build. Below is an example build command for a Windows x64 and Linux x64 host machine:
 
-  
-
+   
+#####  On Windows
 ```bash
-
 cmake  -S  .  -B  out  -DCMAKE_TOOLCHAIN_FILE="%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake"  -DCMAKE_PREFIX_PATH="%VCPKG_ROOT%/installed/x64-windows"
 cd  out
 cmake  --build  .  --config  Release
-
 ```
+
+#####  On Linux
+```bash
+cmake -S . -B out -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake" -DCMAKE_PREFIX_PATH="$VCPKG_ROOT/installed/x64-linux"
+cd  out
+cmake  --build  .  --config  Release
+```
+
 
 During the CMake configuration process, the vcpkg installer script will run in a separate console, pausing cmake until it finishes. This script will set up vcpkg and install the external packages specified in the Dependencies.txt file. After the installation is complete, the user should close the console to allow the CMake process to proceed with its configurations.
 
@@ -244,5 +255,3 @@ This program does amazing things. Below is a demonstration of its execution:
 
 ## Future Works
 A. The node should incorporate receive and send queues to manage bursts of traffic effectively.
-
-B. Build and test in Linux environment
