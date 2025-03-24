@@ -393,11 +393,13 @@ To confirm that all the unreleased memory was associated with the internal alloc
 Keeping only internal memories and nothing else implies that memory will not growth over time.
 
 
-Valgrind output for the Node before editing the infinite loop and dont call objects destructors:
+below screen shows Valgrind output for the Node before editing the infinite loop and dont call objects destructors:
+
 ![Valgrind Output for the Node](assets/node_valgrind_output1.JPG)
 
 
-Valgrind output for the Node after editing the loop, allowing destructors to be invoked and internal memory to be released:
+below screen shows Valgrind output for the Node after editing the loop, allowing destructors to be invoked and internal memory to be released:
+
 ![Valgrind Output for the Node after invoking obj distructors](assets/node_valgrind_output2.JPG)
 
 ## Demonstration
