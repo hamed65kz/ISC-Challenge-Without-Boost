@@ -392,8 +392,12 @@ I ran Valgrind on the Node application and suddenly terminated its execution, wh
 To confirm that all the unreleased memory was associated with the internal allocations of these two classes, I altered the code to add a round limit. This modification enabled the execution to eventually break out of the while loop and invoke the destructors. After making this change, I ran Valgrind once more, and it indicated that there were no memory leaks.
 Keeping only internal memories and nothing else implies that memory will not growth over time.
 
+
+Valgrind output for the Node before editing the infinite loop and dont call objects destructors:
 ![Valgrind Output for the Node](assets/node_valgrind_output1.JPG)
 
+
+Valgrind output for the Node after editing the loop, allowing destructors to be invoked and internal memory to be released:
 ![Valgrind Output for the Node after invoking obj distructors](assets/node_valgrind_output2.JPG)
 
 ## Demonstration
