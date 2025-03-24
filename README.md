@@ -222,11 +222,11 @@ In a microservices environment, it is common to utilize inter-process communicat
 
   
 
--  **Windows**
+-  **Windows** - successfully built, run, and tested.
 
   
 
--  **Linux** - Not Tested
+-  **Linux** - successfully built, run, and tested.
 
   
 
