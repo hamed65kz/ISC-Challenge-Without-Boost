@@ -26,7 +26,10 @@ int main(int argc, char* argv[]) {
 
     // Add signal handling for graceful shutdown
     boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
-    signals.async_wait([&](auto, auto) { io_context.stop(); });
+    signals.async_wait([&](auto, auto) { 
+      io_context.stop();
+      //When stop() is called on an io_context, it will stop the processing of any further asynchronous operations that are queued for execution. This means that any ongoing operations will be allowed to complete, but no new operations will be initiated.
+    });
 
     Router router(io_context, router_port);
 

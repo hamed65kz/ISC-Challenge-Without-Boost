@@ -281,8 +281,6 @@ Fortunately, you do not need to install vcpkg and its dependencies manually. The
 
 #### 3. Build the Project
 
-##### On Windows
-
 ```bash
 
 cmake  -S  .  -B  out
@@ -293,18 +291,6 @@ cmake  --build  .  --config  Release
 
 ```
 
-
-##### On Linux
-
-```bash
-
-cmake  -S  .  -B out
-
-cd  out
-
-cmake  --build  .  --config  Release
-
-```
 
 During the CMake configuration process, the vcpkg installer script will run in a separate console, pausing cmake until it finishes. This script will set up vcpkg and install the external packages specified in the Dependencies.txt file. After the installation is complete, the user should close the console to allow the CMake process to proceed with its configurations.
 
@@ -410,3 +396,4 @@ below screen shows Valgrind output for the Node after editing the loop, allowing
 
 ## Future Works
 A. The node should incorporate receive and send queues to manage bursts of traffic effectively.
+B. Performance and CPU profiling, measure message throughput.
