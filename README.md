@@ -216,7 +216,28 @@ In a microservices environment, it is common to utilize inter-process communicat
 
   
 
-  
+### Detail information about the Router design
+
+The question states that **999** clients will be exist at maximum, which implicitly hint us that we can utilize the `select()` function for I/O multiplexing (as it can handle up to 1023 clients).
+
+The advantage of `select()` is its cross-platform, and it is eliminating the need for additional libraries. However, its performance can be a concern; it operates with a time complexity of O(N) because it must traverse the entire file descriptor array to identify which descriptors are ready for I/O.
+
+Additionally, `select()` requires copying the entire file descriptor set from user space to kernel space each time it is invoked, leading to some overhead.
+
+Overally, this function is well-suited for smaller programs and applications that do not require high performance or extensive connection handling.
+
+A more efficient approach is to utilize the `epoll()` function, which operates on an event-driven model. This means that `epoll()` does not continuously scan the file descriptor set to identify which descriptors are ready, resulting in a time complexity of O(1). However, it's worth noting that `epoll()` is not cross-platform and is specific to Linux.
+
+The `epoll()` function also adheres to the **Reactor pattern**, which signals when an I/O operation is ready (for instance, when data is available for reading). Alternatively, the **Proactor pattern** can be employed, which notifies when an I/O operation has been completed (for example, when data has been successfully read into a buffer).
+
+The Proactor pattern is often preferable because, in the Reactor model, the application itself is responsible for managing partial I/O buffering (collecting data until a complete message is received). In contrast, the Proactor model allows the operating system to handle these partial messages and deliver them only once they are complete.
+
+If we want to implement an **event-driven** model using the **Proactor pattern** in a **cross-platform** manner, the **Boost.Asio** library provides a suitable solution, allowing us to avoid reinventing the wheel.
+
+According to the question and the hidden guidance provided (maximum 999 clients), I should use the `select()` method, but when there is a ready library for a more efficient method, I decided to do the better method(and pre-provided) and use Boost.Asio library.
+
+you can find more information about `select()`and `epoll()` [here.](https://notes.shichao.io/unp/ch6/)
+
 
 ## Supported Platforms
 
