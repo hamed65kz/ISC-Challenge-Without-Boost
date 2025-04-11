@@ -87,7 +87,7 @@ int TCPSocket::connect_to_server() {
  * @return int Returns 0 on success, or 1 on failure.
  */
 int TCPSocket::recvMessage(int& bytes_received, int needed_bytes) {
-  if (needed_bytes >= BUFFER_SIZE) {
+  if (needed_bytes >= BUFFER_SIZE-1) {
     LOG_WARN("needed_bytes is greater than tcp buffer size");
     needed_bytes = BUFFER_SIZE-1;
   }
