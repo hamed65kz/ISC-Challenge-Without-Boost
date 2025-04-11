@@ -9,10 +9,10 @@
 
 #include "logger.h"
 
-const int BUFFER_SIZE = 1500;
+const int BUFFER_SIZE = 32 * 100;
 /**
  * @brief Constructs a TCPSocket instance with the specified server IP and port.
- * 
+ *
  * @param server_ip The IP address of the server to connect to.
  * @param server_port The port number of the server to connect to.
  */
@@ -24,7 +24,7 @@ TCPSocket::TCPSocket(std::string server_ip, int server_port) {
 
 /**
  * @brief Destructor for the TCPSocket class.
- * 
+ *
  * Cleans up allocated resources, including the buffer and closes the socket.
  */
 TCPSocket::~TCPSocket() {
@@ -34,10 +34,10 @@ TCPSocket::~TCPSocket() {
 
 /**
  * @brief Connects to the server using the specified server IP and port.
- * 
- * Initializes the socket, configures the address structure, and attempts to 
+ *
+ * Initializes the socket, configures the address structure, and attempts to
  * establish a connection to the server. Logs errors if the connection fails.
- * 
+ *
  * @return int Returns 0 on success, or 1 on failure.
  */
 int TCPSocket::connect_to_server() {
@@ -76,22 +76,27 @@ int TCPSocket::connect_to_server() {
 
 /**
  * @brief Receives a message from the connected server.
- * 
- * Reads data from the socket into the internal buffer and logs the received 
- * message. Sets the number of bytes received in the provided reference parameter.
- * 
- * @param bytes_received Reference to an integer that will hold the number of 
+ *
+ * Reads data from the socket into the internal buffer and logs the received
+ * message. Sets the number of bytes received in the provided reference
+ * parameter.
+ *
+ * @param bytes_received Reference to an integer that will hold the number of
  * bytes received.
+ * @param needed_bytes an integer to store the number of bytes needed to recv from socket
  * @return int Returns 0 on success, or 1 on failure.
  */
-int TCPSocket::recvMessage(int& bytes_received) {
+int TCPSocket::recvMessage(int& bytes_received, int needed_bytes) {
+  if (needed_bytes >= BUFFER_SIZE) {
+    LOG_WARN("needed_bytes is greater than tcp buffer size");
+    needed_bytes = BUFFER_SIZE-1;
+  }
   // Receive response
   bytes_received = 0;
-  bytes_received = recv(_socket, _buffer, BUFFER_SIZE - 1, 0);
+  bytes_received = recv(_socket, _buffer, needed_bytes, 0);
   if (bytes_received <= 0) {
     if (bytes_received == 0) {
       LOG_ERROR("Connection closed by server");
-      
     } else {
       LOG_ERROR("Receive failed");
     }
@@ -104,9 +109,9 @@ int TCPSocket::recvMessage(int& bytes_received) {
 
 /**
  * @brief Sends a message to the connected server.
- * 
+ *
  * Writes the specified message to the socket and logs the sent message.
- * 
+ *
  * @param message The message to be sent to the server.
  * @return int Returns the number of bytes sent, or -1 on failure.
  */
@@ -121,10 +126,10 @@ int TCPSocket::sendMessage(std::string message) {
 
 /**
  * @brief Retrieves the internal buffer.
- * 
- * Provides a constant pointer to the internal buffer used for receiving 
+ *
+ * Provides a constant pointer to the internal buffer used for receiving
  * messages.
- * 
+ *
  * @return const char* Pointer to the internal buffer.
  */
 const char* TCPSocket::getBuffer() const {
@@ -133,14 +138,14 @@ const char* TCPSocket::getBuffer() const {
 
 /**
  * @brief Closes the socket connection.
- * 
+ *
  * Handles the cleanup of the socket and releases any associated resources.
  */
-void TCPSocket::closeSocket() { 
-  #ifdef _WIN32
-    closesocket(_socket);
-    WSACleanup();
+void TCPSocket::closeSocket() {
+#ifdef _WIN32
+  closesocket(_socket);
+  WSACleanup();
 #else
-    close(_socket);
+  close(_socket);
 #endif
 }

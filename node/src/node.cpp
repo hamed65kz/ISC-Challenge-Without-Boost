@@ -46,7 +46,7 @@ void Node::start() {
       while (err == NO_ERR) {
 
         int recv_bytes = 0;
-        err = this->_tcp_socket->recvMessage(recv_bytes);
+        err = this->_tcp_socket->recvMessage(recv_bytes,MESSAGE_LENGTH);
         if (err != NO_ERR) {closeConnection();continue;}
 
         if (recv_bytes == MESSAGE_LENGTH) {

@@ -46,10 +46,11 @@ class TCPSocket {
  
    /**
     * @brief Receives a message from the server.
-    * @param bytes_received Reference to an integer to store the number of bytes received.
+    * @param bytes_received Reference to an integer to store the number of bytes received.    
+    * @param needed_bytes an integer to store the number of bytes needed to recv from socket
     * @return 0 on success, or an error code on failure.
     */
-   int recvMessage(int& bytes_received);
+   int recvMessage(int& bytes_received,int needed_bytes);
  
    /**
     * @brief Sends a message to the server.
