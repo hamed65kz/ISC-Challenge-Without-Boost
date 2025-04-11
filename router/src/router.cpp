@@ -13,7 +13,6 @@
  */
 Router::Router(io_context& io, int router_port)
     : acceptor_(io, tcp::endpoint(tcp::v4(), router_port)),
-      socket_(io),
       router_port_(router_port),
       members_mutex_(std::make_shared<std::shared_mutex>()) {
   start_accept();
@@ -27,11 +26,11 @@ Router::Router(io_context& io, int router_port)
  * operation.
  */
 void Router::start_accept() {
-  acceptor_.async_accept(socket_, [this](boost::system::error_code ec) {
+  acceptor_.async_accept([this](const boost::system::error_code& ec, tcp::socket new_socket) {
     LOG_INFO("Accept new node request");
     if (!ec) {
       std::shared_ptr<MemberSession> session = std::make_shared<MemberSession>(
-          std::move(socket_), members_, members_mutex_,
+          std::move(new_socket), members_, members_mutex_,
           acceptor_.get_executor());
       session->start();
     } else {

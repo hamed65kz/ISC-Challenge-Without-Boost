@@ -29,7 +29,6 @@ class Router {
   void start_accept();
   int router_port_;         ///< the port router listen to it
   tcp::acceptor acceptor_;  ///< Accepts incoming TCP connections.
-  tcp::socket socket_;      ///< Socket for the current connection.
   std::unordered_map<int, std::shared_ptr<MemberSession>>
       members_;  ///< Active member sessions.
   std::shared_ptr<std::shared_mutex>
