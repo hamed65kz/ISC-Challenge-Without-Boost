@@ -341,4 +341,8 @@ A. The node should incorporate receive and send queues to manage bursts of traff
 
 B. Router get new memory for each message, for better performance we could use pre-allocated memories.
 
-C. Performance and CPU profiling, measure message throughput.
+C. For scalability, select() has limitations (max socket fd, performance).epoll() on Linux are more scalable.
+
+D. Implement internal buffers for handling partial send and recv.
+
+E. Performance and CPU profiling, measure message throughput.
