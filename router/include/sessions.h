@@ -1,7 +1,10 @@
 #ifndef SESSIONS_H
 #define SESSIONS_H
-#include "Session.h"
+
+#include "session.h"
 #include <unordered_map>
+
+#define MAX_CLIENTS_COUNT 999
 
 /**
  * @class Sessions

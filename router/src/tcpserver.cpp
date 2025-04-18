@@ -1,27 +1,23 @@
-#include "TcpServer.h"
+#include "tcpserver.h"
+#include "logger.h"
 
 
-#ifdef _WIN32
-#define GET_SOCKET_ERROR() WSAGetLastError()
-#else
-#define GET_SOCKET_ERROR() errno
-#endif
 
 int TcpServer::start_tcp_server(int port) {
 #ifdef _WIN32
     // Initialize Winsock
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
-        //LOG_ERROR("WSAStartup failed");
-        return -1;
+        LOG_ERROR("WSAStartup failed");
+        return SOCKET_ERROR;
     }
 #endif
 
     // Create socket
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
     if (server_socket == -1) {
-        //LOG_ERROR("Socket creation failed");
-        return -1;
+        LOG_ERROR("Socket creation failed");
+        return SOCKET_ERROR;
     }
     // Configure server address
     auto servAddr = sockaddr_in{};
@@ -35,8 +31,8 @@ int TcpServer::start_tcp_server(int port) {
         sizeof(servAddr));
     if (bindStatus < 0)
     {
-        //cerr << "Error binding socket to local address" << endl;
-        return -1;
+        LOG_ERROR("Error binding socket to local address");
+        return SOCKET_ERROR;
     }
     listen(server_socket, 5);
     return server_socket;
@@ -59,7 +55,7 @@ int TcpServer::set_client_socket_nonblocking(int client_socket) {
         int error = WSAGetLastError();
         closesocket(client_socket);
         // Handle error (WSAGetLastError() codes)
-        return -1;
+        return SOCKET_ERROR;
     }
 #else
     // Linux/Unix non-blocking setup
@@ -67,7 +63,7 @@ int TcpServer::set_client_socket_nonblocking(int client_socket) {
     if (fcntl(client_socket, F_SETFL, flags | O_NONBLOCK) == -1) {
         //perror("fcntl failed");
         close(client_socket);
-        return -1;
+        return SOCKET_ERROR;
     }
 #endif
     return 0;
@@ -78,7 +74,7 @@ bool TcpServer::no_more_data() {
     if (GET_SOCKET_ERROR() == WSAEWOULDBLOCK)
         return true;
 #else
-    if (errno == EWOULDBLOCK)
+    if (errno == EWOULDBLOCK || errno == EAGAIN)
         return true;
 #endif
     return false;
@@ -97,11 +93,10 @@ int TcpServer::read_async(int client_socket, char* buffer,int buffer_len) {
             if(total_read == buffer_len)
                 break;
         }
-        else if (bytes_read == -1) {
+        else if (bytes_read == SOCKET_ERROR) {
 
             if (no_more_data()) {
                 // No more data available
-                buffer[total_read] = 0; // add null terminating
                 return total_read;
             }
             else {
@@ -109,24 +104,24 @@ int TcpServer::read_async(int client_socket, char* buffer,int buffer_len) {
                 return SOCKET_ERROR;
             }
         }
-        else {
-            // Connection closed
+        else if (bytes_read == 0){
+            // 0 = Connection closed
+            return SOCKET_ERROR;
+        }
+        else{
+            // will not come here
             return SOCKET_ERROR;
         }
     }
-    // add null terminating
-    buffer[total_read] = 0;
+
     return total_read;
 }
 
 int TcpServer::send_to_client(int client_socket, std::string buffer) {
     int bytesSent = send(client_socket, buffer.c_str(), buffer.size(), 0);
     if (bytesSent != buffer.size()) {
-#ifdef _WIN32
-        //cout GET_SOCKET_ERROR() 
-#else
-        //cout errno       
-#endif
+        int err = GET_SOCKET_ERROR() ;
+        LOG_ERROR("Error on send. err code : {}",err);
         return SOCKET_ERROR;
     }
     return bytesSent;

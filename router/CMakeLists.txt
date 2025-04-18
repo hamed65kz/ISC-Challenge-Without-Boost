@@ -8,12 +8,12 @@ set(CMAKE_CXX_EXTENSIONS Off)
 
 
 SET(SOURCES
-    src/member_session.cpp
+    src/tcpserver.cpp
+    src/sessions.cpp
     src/router.cpp
     )
 
 add_executable(${PROJECT_NAME} main.cpp ${SOURCES})
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
-include(../cmake_modules/boost.cmake)
 include(../cmake_modules/spdlog.cmake)

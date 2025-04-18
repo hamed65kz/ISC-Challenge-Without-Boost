@@ -14,6 +14,11 @@
 #endif
 #include <iostream>
 
+#ifdef _WIN32
+#define GET_SOCKET_ERROR() WSAGetLastError()
+#else
+#define GET_SOCKET_ERROR() errno
+#endif
 
 
 /**

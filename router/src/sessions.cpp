@@ -1,5 +1,6 @@
-#include "Sessions.h"
+#include "sessions.h"
 #include <iostream>
+#include "logger.h"
 
 void Sessions::init_sessions(int max_clients_count) {
 	accepted_clients_.reserve(max_clients_count);
@@ -22,14 +23,21 @@ const std::vector<int>& Sessions::get_accpeted_sockets() {
 }
 void Sessions::add_node(int client_socket,int node_id){
 	std::unique_lock<std::shared_mutex> lock(*sessions_mutex_);
-	if (sessions_by_id_.count(node_id) == 1) {
-		// node added before.
-		return;
-	}
+	
 	if (sessions_by_socket_.count(client_socket) == 0) {
-		// session not found
+		LOG_ERROR("Session terminated befoe id handshaking. id = {}", node_id);
 		return;
 	}
+
+	if(node_id >= MAX_CLIENTS_COUNT ){
+		LOG_ERROR("node is invalid. id = {}", node_id);
+		return;
+	}
+
+	if (sessions_by_id_.count(node_id) == 1) {
+		LOG_WARN("Nodeid Exist, restart connection , ID : {}", node_id);
+	}
+
 
 	auto session = sessions_by_socket_[client_socket];
 	session->set_id(node_id);
@@ -52,7 +60,7 @@ std::shared_ptr<Session> Sessions::find_session_by_id(int node_id){
 	return session;
 }
 void Sessions::removeSession(int socket){
-	std::cout << "remove socket " << socket << "\n";
+
 	std::unique_lock<std::shared_mutex> lock(*sessions_mutex_);
 
 	// remove from sessions_by_socket_ , sessions_by_id_
@@ -73,10 +81,9 @@ void Sessions::removeSession(int socket){
 	if (it != accepted_clients_.end()) {
 		accepted_clients_.erase(it);
 	}
-
 }
 
-
+// sinitialize static variables
 std::unordered_map<int, std::shared_ptr<Session>> Sessions::sessions_by_socket_ = std::unordered_map<int, std::shared_ptr<Session>>();
 std::unordered_map<int, std::shared_ptr<Session>> Sessions::sessions_by_id_ = std::unordered_map<int, std::shared_ptr<Session>>();
 std::vector<int> Sessions::accepted_clients_ = std::vector<int>();

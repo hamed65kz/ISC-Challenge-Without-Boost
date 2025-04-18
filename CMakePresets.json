@@ -17,7 +17,7 @@
         },
         {
             "name": "MSVC2022-X64",
-            "displayName": "Visual Studio Enterprise 2022 Release - amd64",
+            "displayName": "Visual Studio Enterprise 2022 - amd64",
             "description": "Using compilers for Visual Studio 17 2022 (x64 architecture)",
             "generator": "Visual Studio 17 2022",
             "toolset": "host=x64",

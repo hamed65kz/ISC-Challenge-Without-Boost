@@ -22,28 +22,8 @@ int main(int argc, char* argv[]) {
 
     LOG_INFO("Router started to listen on {} port.", router_port);
 
-    io_context io_context;
-
-    // Add signal handling for graceful shutdown
-    boost::asio::signal_set signals(io_context, SIGINT, SIGTERM);
-    signals.async_wait([&](auto, auto) { 
-      io_context.stop();
-      //When stop() is called on an io_context, it will stop the processing of any further asynchronous operations that are queued for execution. This means that any ongoing operations will be allowed to complete, but no new operations will be initiated.
-    });
-
-    Router router(io_context, router_port);
-
-    // Create thread pool
-    std::vector<std::thread> threads;
-    threads.reserve(THREAD_COUNT);
-    for (int i = 0; i < THREAD_COUNT; ++i) {
-      threads.emplace_back([&io_context]() { io_context.run(); });
-    }
-
-    // Wait for all threads
-    for (auto& thread : threads) {
-      if (thread.joinable()) thread.join();
-    }
+    Router::start(THREAD_COUNT, router_port);
+    
 
   } catch (std::exception& e) {
     std::cerr << "Exception: " << e.what() << "\n";

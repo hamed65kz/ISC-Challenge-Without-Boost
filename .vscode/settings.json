@@ -99,6 +99,7 @@
         "complex": "cpp",
         "regex": "cpp",
         "expected": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "cerrno": "cpp"
     }
 }
