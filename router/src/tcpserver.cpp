@@ -126,3 +126,20 @@ int TcpServer::send_to_client(int client_socket, std::string buffer) {
     }
     return bytesSent;
 }
+int TcpServer::reset_fd_set(fd_set &fd, int server_socket,
+    std::vector<int> clients_socket) {
+// reset fd to clear all
+FD_ZERO(&fd);
+
+// register server socket for monitoring
+FD_SET(server_socket, &fd);
+int max_sd = server_socket;
+
+// register clients socket for monitoring
+for (int i = 0; i < clients_socket.size(); i++) {
+int sd = clients_socket[i];
+FD_SET(sd, &fd);
+if (sd > max_sd) max_sd = sd;
+}
+return max_sd;
+}

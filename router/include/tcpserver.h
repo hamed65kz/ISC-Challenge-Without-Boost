@@ -13,6 +13,7 @@
 
 #endif
 #include <iostream>
+#include <vector>
 
 #ifdef _WIN32
 #define GET_SOCKET_ERROR() WSAGetLastError()
@@ -65,6 +66,15 @@ public:
      * @return Number of bytes sent, or SOCKET_ERROR on failure.
      */
     static int send_to_client(int client_socket, std::string buffer);
+
+    /**
+     * @brief Sets file descriptor set for select and adds server/socket descriptors.
+     * @param fd Reference to fd_set to modify.
+     * @param server_socket Listening socket descriptor.
+     * @param clients_socket Vector of client socket descriptors.
+     * @return Updated maximum file descriptor value.
+     */
+    static int reset_fd_set(fd_set& fd, int server_socket, std::vector<int> clients_socket);
 
 private:
     /**
