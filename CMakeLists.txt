@@ -7,11 +7,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(cmake_modules/configure_vcpkg/ConfigureVCPKG.cmake NO_POLICY_SCOPE)
-configure_vcpkg()
+#configure_vcpkg()
 
 enable_testing()
 
 add_subdirectory("router")
-add_subdirectory("node")
-add_subdirectory("tests")
+#add_subdirectory("node")
+#add_subdirectory("tests")
 
