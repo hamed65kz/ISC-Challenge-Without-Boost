@@ -157,6 +157,38 @@ In summary, we monitor socket events and perform asynchronous reads on sockets t
   
 The Rest(Node and Messaging mechanism) is the same and didnt changed.
 
+ #### Task Distribution Strategy for Router Worker Threads
+
+Threre is two models for distributing read/write tasks across router worker threads:
+
+1.  **Dedicated Thread Roles (Read/Write Separation):**
+    
+    -   **Approach:**  Assign separate threads to handle read and write operations exclusively.
+        
+    -   **Advantages:**
+        
+        -   Logical separation of concerns
+        -   Simplified design and debugging due to clear task boundaries.
+        -   Optimal when read and write workloads are balanced and predictable.
+            
+    -   **Limitations:**     
+        -   Risk of underutilized threads if read/write loads become uneven (e.g., read-heavy bursts leave write threads idle, or vice versa).
+            
+2.  **Unified Thread Model (Hybrid Task Queues):**
+    
+    -   **Approach:**  Allow all threads to dynamically pick tasks from a shared pool of read/write queues.
+        
+    -   **Advantages:**
+        
+        -   Improved load balancing, especially during imbalanced workloads (e.g., threads assist overloaded queues).
+        -   Better resource utilization under fluctuating or unpredictable traffic.
+        
+	   -   **Trade-offs:**
+        
+	        -   Increased complexity in thread synchronization and task prioritization.
+            
+            
+For simplicity, I am currently following the first approach. However, I believe that in the router context, reader threads are more critical, and all threads should assist with reading. Therefore, the second approach seems more appropriate for the router, and I have listed it in future work tasks.
 ### Sequence Diagram
 
 For better understanding of solution structure, I model the solution with object-level sequence diagram plus threads as a separate lifelines.
@@ -345,4 +377,6 @@ C. For scalability, select() has limitations (max socket fd, performance).epoll(
 
 D. Implement internal buffers for handling partial send and recv.
 
-E. Performance and CPU profiling, measure message throughput.
+E. Apply unified thread model on the Router task distribution mechanism.
+
+F. Performance and CPU profiling, measure message throughput.
