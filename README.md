@@ -3,13 +3,11 @@
 
 ## Problem
 The challenge is identical to the ISC Programming Challenge; you can review the problem statement [here](https://github.com/hamed65kz/ISC-Challenge?tab=readme-ov-file#system-components).
-  
 
-  
+The goal of this version is to replace Boost.Asio with custom-developed code and to implement an event listening mechanism independently.
+
 
 ## Solution
-
-  
 
 The system solution prioritizes _performance at the router_ and _simplicity at the endpoints_.
 
