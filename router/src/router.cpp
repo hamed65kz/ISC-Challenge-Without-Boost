@@ -1,8 +1,11 @@
 #include "router.h"
-#include "tcpserver.h"
+
 #include <thread>
+
 #include "logger.h"
 #include "message.h"
+#include "tcpserver.h"
+
 
 #define RECV_BUFF_SIZE 32 * 3000
 
@@ -19,12 +22,11 @@ int Router::start(unsigned thread_count, unsigned port) {
   std::vector<std::thread> threads;
   threads.reserve(thread_count);
 
-  int read_thread_count = thread_count/2;
-  int write_thread_count = thread_count/2;
-  if(thread_count % 2 == 1){
+  int read_thread_count = thread_count / 2;
+  int write_thread_count = thread_count / 2;
+  if (thread_count % 2 == 1) {
     read_thread_count++;
   }
-  
 
   for (int i = 0; i < read_thread_count; ++i) {
     threads.emplace_back(worker_thread_read_handler, i);
@@ -75,8 +77,8 @@ void Router::start_event_listener(int server_socket) {
   // this the event loop, listening to new events infinitely.
   while (true) {
     // reset descriptors set, reseting is demanded by select()
-    int max_sd =
-        TcpServer::reset_fd_set(readfds, server_socket, Sessions::get_accpeted_sockets());
+    int max_sd = TcpServer::reset_fd_set(readfds, server_socket,
+                                         Sessions::get_accpeted_sockets());
 
     // Wait for activity or event, include connect new client, recv new data,
     // terminate client connections
@@ -96,27 +98,29 @@ void Router::start_event_listener(int server_socket) {
       // register accepted socket on Sessions class, session is responsible for
       // managing connections
       Sessions::accept_client(new_client_socket);
-      LOG_INFO("Accept new node request");
+      LOG_INFO("Accept new node request {}.",new_client_socket);
     }
 
     // push intruppted client sockets to the queue
     for (int i = 0; i < activity; i++) {
       int socket = readfds.fd_array[i];
+      if (socket != server_socket) {
         bool dont_push_if_repeated_event = true;
-        ready_read_sockets_queue_.push(socket,dont_push_if_repeated_event);
+        ready_read_sockets_queue_.push(socket, dont_push_if_repeated_event);
+      }
     }
   }
 }
 
 void Router::do_reads(int ready_read_socket, char *recv_buffer) {
-    // find session related to this socket
+  // find session related to this socket
   auto src_session = Sessions::find_session_by_socket(ready_read_socket);
   if (src_session == nullptr) {
     // it may be removed since its, connection terminated.
-    LOG_ERROR("The socket doesnt exist and alive yet.");
+    LOG_ERROR("The socket doesnt exist and alive yet.1");
     return;
   } else {
-    int session_id = src_session->get_id();
+    
     auto socket_mutex = src_session->get_mutex();
 
     // lock with socket mutex, its serialize each socket reads and writes
@@ -125,12 +129,13 @@ void Router::do_reads(int ready_read_socket, char *recv_buffer) {
     auto src_session = Sessions::find_session_by_socket(ready_read_socket);
     if (src_session == nullptr) {
       // it may be removed since its, connection terminated.
-      LOG_ERROR("The socket doesnt exist and alive yet.");
+      LOG_ERROR("The socket doesnt exist and alive yet.2");
       return;
     }
 
     int bytes_read = 0;
     do {
+      int session_id = src_session->get_id();
       if (session_id == NONE) {
         bytes_read = handle_handshake(ready_read_socket, recv_buffer);
       } else {
@@ -183,7 +188,7 @@ int Router::process_message(int ready_read_socket, char *recv_buffer) {
     LOG_ERROR(
         "read_async() return error. connection crashed or terminated by "
         "client");
-  } else {
+  } else if (bytes_read != 0) {
     // message len is insuffcient. this bytes will drop unfortunately.
     LOG_ERROR(
         "Received MSG length is insufficient for MSG processing, {} bytes will "
@@ -203,7 +208,7 @@ int Router::handle_handshake(int ready_read_socket, char *recv_buffer) {
     // class
 
     // add null terminating.
-    recv_buffer[DATA_MESSAGE_SIZE] = 0;
+    recv_buffer[ID_MESSAGE_SIZE] = 0;
 
     int src_id = Message::extract_src_id(recv_buffer, bytes_read);
     Sessions::add_node(ready_read_socket, src_id);
@@ -213,7 +218,7 @@ int Router::handle_handshake(int ready_read_socket, char *recv_buffer) {
     LOG_ERROR(
         "read_async() return error. connection crashed or terminated by "
         "client");
-  } else {
+  } else if( bytes_read != 0) {
     // message len is insuffcient. this bytes will drop unfortunately.
     LOG_ERROR(
         "Received MSG length is insufficient for node handshaking, {} bytes "

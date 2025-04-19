@@ -39,9 +39,9 @@ void Sessions::add_node(int client_socket,int node_id){
 	}
 
 
-	auto session = sessions_by_socket_[client_socket];
+	auto& session = sessions_by_socket_[client_socket];
 	session->set_id(node_id);
-	sessions_by_id_[node_id] = sessions_by_socket_[client_socket];
+	sessions_by_id_[node_id] = session;
 }
 std::shared_ptr<Session> Sessions::find_session_by_socket(int client_socket) {
 	std::shared_lock<std::shared_mutex> lock(*sessions_mutex_);
