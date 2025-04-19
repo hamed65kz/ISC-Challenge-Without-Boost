@@ -1,65 +1,60 @@
-#pragma once
+#ifndef SIGNALINGQUEUE_H
+#define SIGNALINGQUEUE_H
 
-
-#include <condition_variable>
-#include <iostream>
-#include <mutex>
-#include <queue>
-#include <list>
-
-// Thread-safe queue
+/**
+ * @brief A thread-safe queue implementation with signaling capabilities.
+ */
 template <typename T>
 class SignalingQueue {
 private:
-    // Underlying queue
-    std::queue<T, std::list<T>> m_queue;
+    /// Underlying queue storing elements
+    std::queue<T> m_queue;
 
-    // mutex for thread synchronization
+    /// Mutex for synchronizing access to the queue.
     std::mutex m_mutex;
 
-    // Condition variable for signaling
+    /// Condition variable for signaling availability of new items.
     std::condition_variable m_cond;
 
 public:
-
-    // Pushes an element to the queue
+    /**
+     * @brief Pushes an element into the queue and notifies one waiting thread
+     * @param item The element to be added to the queue.
+     * @param skip_if_repeated If true, skips insertion if the last element is equal to item.
+     */
     void push(T item, bool skip_if_repeated=false)
     {
 
-        // Acquire lock
         std::unique_lock<std::mutex> lock(m_mutex);
 
         if (skip_if_repeated && m_queue.size() > 0) {
             if (m_queue.back() == item) {
-              return;
+                return; // Skip inserting duplicate at the end
             }
         }
 
-        // Add item
+
         m_queue.push(item);
 
-        // Notify one thread that
-        // is waiting
+        // Notify one waiting thread that an item is available
         m_cond.notify_one();
     }
 
-    // Pops an element off the queue
+    /**
+     * @brief Pops an element from the queue.
+     * This operation blocks if the queue is empty until an item is available.
+     * @return The element at the front of the queue.
+     */
     T pop()
     {
-
-        // acquire lock
         std::unique_lock<std::mutex> lock(m_mutex);
 
-        // wait until queue is not empty
-        m_cond.wait(lock,
-            [this]() { return !m_queue.empty(); });
+        // Wait until the queue is not empty
+        m_cond.wait(lock, [this]() { return !m_queue.empty(); });
 
-        // retrieve item
         T item = m_queue.front();
         m_queue.pop();
-
-        // return item
         return item;
     }
 };
-
+#endif

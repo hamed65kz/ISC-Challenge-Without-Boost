@@ -1,4 +1,4 @@
-# ISC Programming Challenge: Message Routing System
+# ISC Programming Challenge 2 : Message Routing System
 
   
 
@@ -157,9 +157,9 @@ In summary, we monitor socket events and perform asynchronous reads on sockets t
   
 The Rest(Node and Messaging mechanism) is the same and didnt changed.
 
- #### Task Distribution Strategy for Router Worker Threads
+#### Task Distribution Strategy for Router Worker Threads
 
-Threre is two models for distributing read/write tasks across router worker threads:
+Threre is two model for distributing read/write tasks across router worker threads:
 
 1.  **Dedicated Thread Roles (Read/Write Separation):**
     
@@ -186,9 +186,12 @@ Threre is two models for distributing read/write tasks across router worker thre
 	   -   **Trade-offs:**
         
 	        -   Increased complexity in thread synchronization and task prioritization.
-            
-            
+       
 For simplicity, I am currently following the first approach. However, I believe that in the router context, reader threads are more critical, and all threads should assist with reading. Therefore, the second approach seems more appropriate for the router, and I have listed it in future work tasks.
+
+#### Queues Optimization Strategy
+To minimize latency and boost performance, I replaced idle thread polling (sleeping on empty queues) with **conditional variables**. Threads now wait efficiently and are _instantly notified_ when tasks arrive. This ensures threads wake immediately to process tasks.
+
 ### Sequence Diagram
 
 For better understanding of solution structure, I model the solution with object-level sequence diagram plus threads as a separate lifelines.
