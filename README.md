@@ -1,137 +1,8 @@
 # ISC Programming Challenge 2 : Message Routing System
 
-  
 
-  
-
-## System Components
-
-  
-
-  
-
--  **Member**
-
-  
-
-- Unique ID (1-999).
-
-  
-
-- Connects to the router via TCP.
-
-  
-
--  **Router**
-
-  
-
-- Routes messages between members.
-
-  
-
-- Logs all sent/received messages in a file.
-
-  
-
--  **Message**
-
-  
-
-- Fixed 32-character format:
-
-  
-
-`ID (3) | MTI (4) | Trace (6) | PAN (16) | Dest.ID (3)`
-
-  
-
-- Example Request (Member 5 → 3):
-
-  
-
-`00522001234561111111111111111003`
-
-  
-
-- Example Reply (Member 3 → 5):
-
-  
-
-`00322101234561111111111111111005`
-
-  
-
-  
-
-## Implementation Steps
-
-  
-
-  
-
-1.  **Setup**
-
-  
-
-- Implement members and router.
-
-  
-
-- Members connect to the router and register their IDs via TCP.
-
-  
-
-2.  **Message Routing**
-
-  
-
-- Members generate messages in the specified format.
-
-  
-
-- Router forwards messages to the `Dest.ID`.
-
-  
-
-3.  **Reply Handling**
-
-  
-
-- Destination member increments the `MTI` by 10 (e.g., `2200` → `2210`).
-
-  
-
-- Reply is sent back to the source member via the router.
-
-  
-
-4.  **Logging**
-
-  
-
-- Router logs all messages in a file.
-
-  
-
-  
-
-## Requirements
-
-  
-
-  
-
-- Use **CMake** for project generation.
-
-  
-
-- Code in **Modern C++ (11/14/17)**.
-
-  
-
-- External libraries are allowed.
-
+## Problem
+The challenge is identical to the ISC Programming Challenge; you can review the problem statement [here](https://github.com/hamed65kz/ISC-Challenge?tab=readme-ov-file#system-components).
   
 
   
@@ -346,8 +217,7 @@ All nodes will send a message to destination node on node startup.
 I use Valgrind to detect memory-related problems. I run it for both the Router and Node, and the results are displayed below.
 
 ### The Router
-I ran Valgrind on the Router, and it didn't report any memory issues, indicating that all memory blocks were successfully freed.
-![Valgrind Output for the Router](assets/router_valgrind_output.JPG)
+The Valgrind didn't run for new Router.
 
 ### The Node
 I ran Valgrind on the Node application and suddenly terminated its execution, which resulted in reports of some memory blocks that were not freed. Upon reviewing the code, I found that these memory blocks were allocated internally within the constructors of the Node and TCPSocket classes. This internal memory is supposed to be released in their respective destructors. However, in the Node, there is an infinite while loop that prevents objects from going out of scope, which means the destructors are never called.
@@ -383,3 +253,5 @@ D. Implement internal buffers for handling partial send and recv.
 E. Apply unified thread model on the Router task distribution mechanism.
 
 F. Performance and CPU profiling, measure message throughput.
+
+G. Peform memory check for the Router with Vagrind.
