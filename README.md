@@ -24,7 +24,7 @@ For designing the router, we utilize an event-driven model along with the select
 In summary, we monitor socket events and perform asynchronous reads on sockets that are ready. Worker threads pick ready sockets from a queue and execute recv() calls in asynchronous mode. After processing the message, the socket is moved to a write-ready queue. Subsequently, worker threads pop sockets from this write queue and perform send() operations.
 
   
-The Rest(Node and Messaging mechanism) is the same and didnt changed.
+The rest(node and messaging mechanism) is the same and didnt changed.
 
 #### Task Distribution Strategy for Router Worker Threads
 
@@ -119,9 +119,6 @@ This project utilizes [vcpkg](https://github.com/microsoft/vcpkg) for managing e
 
   
 Fortunately, you do not need to install vcpkg and its dependencies manually. The project includes an automated routine that installs vcpkg and subsequently installs the dependencies listed in the `Dependencies.txt` file located in the root of the project. This routine will be triggered when you start configuring the CMake project.
-
-
-:warning:The key point is that on Windows, the default triplet is x64-windows, which utilizes the MSVC compiler. Consequently, packages are built using MSVC. If you switch the CMake generator to MinGW, the installed packages will not be compatible with MinGW, Since MSVC and MinGW utilize different C++ ABIs and link to separate runtime libraries, combining them can lead to linker errors like LNK2019 or undefined references. Unfortunately, the current VCPKG automated process does not account for compiler-specific triplets and only installs the platform-specific default triplet. Therefore, on Windows, you cannot link packages built with MSVC to executables built with MinGW.
 
 The Boost.Asio is eliminated but still we need gtest package, so still keep vcpkg section.  
 
