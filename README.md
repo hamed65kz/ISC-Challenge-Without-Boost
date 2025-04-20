@@ -249,6 +249,8 @@ E. Apply unified thread model on the Router task distribution mechanism.
 
 F. Performance and CPU profiling, measure message throughput.
 
-G. Peform memory check for the Router with Vagrind.
+G. Perform memory check for the Router with Vagrind.
 
 H. Apply frame synchronization or framing, it lets the receiver identifies the frame/message boundaries. 
+
+J. Apply thread affinity on main thread and worker thread to avoid unneccesray context switches and dont distrupt threads caches 
