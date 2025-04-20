@@ -237,7 +237,7 @@ below screen shows Valgrind output for the Node after editing the loop, allowing
 
 
 ## Future Works
-A. The node should incorporate receive and send queues to manage bursts of traffic effectively.
+A. The node should utilize send queue to manage bursts of traffic effectively.
 
 B. Router get new memory for each message, for better performance we could use pre-allocated memories.
 
@@ -250,3 +250,5 @@ E. Apply unified thread model on the Router task distribution mechanism.
 F. Performance and CPU profiling, measure message throughput.
 
 G. Peform memory check for the Router with Vagrind.
+
+H. Apply frame synchronization or framing, it let the receiver identifies the frame/message boundaries. 
