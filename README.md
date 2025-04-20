@@ -251,4 +251,4 @@ F. Performance and CPU profiling, measure message throughput.
 
 G. Peform memory check for the Router with Vagrind.
 
-H. Apply frame synchronization or framing, it let the receiver identifies the frame/message boundaries. 
+H. Apply frame synchronization or framing, it lets the receiver identifies the frame/message boundaries. 
